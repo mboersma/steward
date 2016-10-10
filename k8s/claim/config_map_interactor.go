@@ -3,6 +3,7 @@ package claim
 import (
 	"context"
 
+	"github.com/deis/steward/k8s"
 	"k8s.io/client-go/1.4/kubernetes/typed/core/v1"
 	"k8s.io/client-go/1.4/pkg/api"
 	v1types "k8s.io/client-go/1.4/pkg/api/v1"
@@ -13,7 +14,7 @@ type cmInterface struct {
 	cm v1.ConfigMapInterface
 }
 
-func (c cmInterface) Get(name string) (*ServicePlanClaimWrapper, error) {
+func (c cmInterface) Get(name string) (*k8s.ServicePlanClaimWrapper, error) {
 	cm, err := c.cm.Get(name)
 	if err != nil {
 		return nil, err
@@ -21,7 +22,7 @@ func (c cmInterface) Get(name string) (*ServicePlanClaimWrapper, error) {
 	return servicePlanClaimWrapperFromConfigMap(cm)
 }
 
-func (c cmInterface) List(opts api.ListOptions) (*ServicePlanClaimsListWrapper, error) {
+func (c cmInterface) List(opts api.ListOptions) (*k8s.ServicePlanClaimsListWrapper, error) {
 	cms, err := c.cm.List(opts)
 	if err != nil {
 		return nil, err
@@ -40,7 +41,7 @@ func (c cmInterface) List(opts api.ListOptions) (*ServicePlanClaimsListWrapper, 
 	}, nil
 }
 
-func (c cmInterface) Update(spc *ServicePlanClaimWrapper) (*ServicePlanClaimWrapper, error) {
+func (c cmInterface) Update(spc *k8s.ServicePlanClaimWrapper) (*k8s.ServicePlanClaimWrapper, error) {
 	cm := &v1types.ConfigMap{
 		Data:       spc.Claim.ToMap(),
 		ObjectMeta: spc.ObjectMeta,

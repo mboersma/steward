@@ -34,7 +34,7 @@ func isNoSuchServiceAndPlanErr(e error) bool {
 	return ok
 }
 
-func getService(claim mode.ServicePlanClaim, catalog k8s.ServiceCatalogLookup) (*k8s.ServiceCatalogEntry, error) {
+func getService(claim k8s.ServicePlanClaim, catalog k8s.ServiceCatalogLookup) (*k8s.ServiceCatalogEntry, error) {
 	svc := catalog.Get(claim.ServiceID, claim.PlanID)
 	if svc == nil {
 		logger.Debugf("service %s, plan %s not found", claim.ServiceID, claim.PlanID)

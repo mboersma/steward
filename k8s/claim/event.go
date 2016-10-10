@@ -42,7 +42,7 @@ type nextFunc func(
 
 // Event represents the event that a service plan claim has changed in kubernetes. It implements fmt.Stringer
 type Event struct {
-	claim     *ServicePlanClaimWrapper
+	claim     *k8s.ServicePlanClaimWrapper
 	operation watch.EventType
 }
 

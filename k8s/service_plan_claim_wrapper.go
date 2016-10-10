@@ -1,20 +1,20 @@
-package claim
+package k8s
 
 import (
 	"fmt"
 
-	"github.com/deis/steward/mode"
 	"k8s.io/client-go/1.4/pkg/api/v1"
 )
 
 // ServicePlanClaimWrapper is a wrapper for a ServicePlanClaim that also contains kubernetes-specific information
 type ServicePlanClaimWrapper struct {
 	ObjectMeta v1.ObjectMeta
-	Claim      *mode.ServicePlanClaim
+	Claim      *ServicePlanClaim
 }
 
-func servicePlanClaimWrapperFromConfigMap(cm *v1.ConfigMap) (*ServicePlanClaimWrapper, error) {
-	claim, err := mode.ServicePlanClaimFromMap(cm.Data)
+// ServicePlanClaimWrapperFromConfigMap parses a ServicePlanClaim from cm and returns the wrapper representation of it. Returns nil and an error if the config map was malformed
+func ServicePlanClaimWrapperFromConfigMap(cm *v1.ConfigMap) (*ServicePlanClaimWrapper, error) {
+	claim, err := ServicePlanClaimFromMap(cm.Data)
 	if err != nil {
 		return nil, err
 	}
