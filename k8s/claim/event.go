@@ -51,7 +51,7 @@ func eventFromConfigMapEvent(raw watch.Event) (*Event, error) {
 	if !ok {
 		return nil, errNotAConfigMap
 	}
-	claimWrapper, err := servicePlanClaimWrapperFromConfigMap(configMap)
+	claimWrapper, err := k8s.ServicePlanClaimWrapperFromConfigMap(configMap)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ func eventFromConfigMapEvent(raw watch.Event) (*Event, error) {
 }
 
 func (e Event) toConfigMap() *v1types.ConfigMap {
-	return e.claim.toConfigMap()
+	return e.claim.ToConfigMap()
 }
 
 // String is the fmt.Stringer interface implementation
@@ -72,8 +72,8 @@ func (e Event) String() string {
 
 func (e *Event) nextAction() (nextFunc, error) {
 	claim := e.claim.Claim
-	action := mode.Action(claim.Action)
-	status := mode.Status(claim.Status)
+	action := k8s.ServicePlanClaimAction(claim.Action)
+	status := k8s.ServicePlanClaimStatus(claim.Status)
 
 	stateNoStatus := state.NewCurrentNoStatus(action, e.operation)
 	stateWithStatus := state.NewCurrent(status, action, e.operation)

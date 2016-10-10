@@ -34,7 +34,8 @@ func (spc ServicePlanClaimWrapper) String() string {
 	return fmt.Sprintf("%s (resource %s)", *spc.Claim, spc.ObjectMeta.ResourceVersion)
 }
 
-func (spc ServicePlanClaimWrapper) toConfigMap() *v1.ConfigMap {
+// ToConfigMap converts spc to a ConfigMap that ServicePlanClaimFromMap will decode back into spc
+func (spc ServicePlanClaimWrapper) ToConfigMap() *v1.ConfigMap {
 	return &v1.ConfigMap{
 		ObjectMeta: spc.ObjectMeta,
 		Data:       spc.Claim.ToMap(),
